@@ -13,3 +13,5 @@ def onehot(array, num_classes):
     b = a.astype(int)
     array_onehot.flat[b] = 1
     return array_onehot
+
+

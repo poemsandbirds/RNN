@@ -9,4 +9,6 @@ parser.add_argument('--num_steps', type=int, default=30,
                     help='length of sequence')
 parser.add_argument('--data_path', type=str, default='../data/HarryPotter/Book1.txt',
                     help='path to read data')
+parser.add_argument('--num_hiddens', type=int, default=512,
+                    help='number of hidden layer')
 args = parser.parse_args()
