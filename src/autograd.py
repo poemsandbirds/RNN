@@ -260,6 +260,19 @@ class Tensor:
 
         return t
 
+    def log(inputs):
+        data = np.log(inputs.data)
+        requires_grad = inputs.requires_grad
+        t = Tensor(data, requires_grad)
+        t.is_leaf = False
+
+        if inputs.requires_grad:
+            def LogBackward(grad):
+                return grad * (1/inputs.data * np.log(10))
+
+            t.grad_node.append(GRAD_NODE_FMT(inputs, LogBackward))
+
+        return t
     def tanh(inputs):
         data = np.tanh(inputs.data)
         requires_grad = inputs.requires_grad
@@ -273,6 +286,44 @@ class Tensor:
             t.grad_node.append(GRAD_NODE_FMT(inputs, TanhBackward))
 
         return t
+
+
+    def softmax(inputs):
+        # raise NotImplementedError('There is a bug')
+        def softmax_func(x):
+            max_v = np.max(x)
+            return np.e ** (x - max_v) / np.sum(np.e ** (x - max_v))
+
+        # assert inputs.data.ndim == 1 or (
+        #             inputs.data.ndim == 2 and (inputs.data.shape[0] == 1 or inputs.data.shape[1] == 1))
+        # data = np.apply_over_axes(softmax_func, dim, inputs.data)
+        data = softmax_func(inputs.data)
+        requires_grad = inputs.requires_grad
+        t = Tensor(data, requires_grad)
+        t.is_leaf = False
+
+        if inputs.requires_grad:
+            def SoftmaxBackward(grad):
+                result = softmax_func(inputs.data)
+                length = inputs.data.reshape(-1).shape[0]
+                mat = np.zeros((length, length))
+                for i in range(length):
+                    for j in range(length):
+                        if i == j:
+                            mat[i][j] = result[i] * (1 - result[i])
+                        else:
+                            mat[i][j] = result[i] * result[j]
+                # print('mat')
+                # print(mat)
+                # print('grad')
+                # print(grad)
+                next_grad = mat @ grad
+                return next_grad
+
+            t.grad_node.append(GRAD_NODE_FMT(inputs, SoftmaxBackward))
+
+        return t
+
 
     def mean(self, dim=None, keepdim=False):
         data = self.data.mean(axis=dim, keepdims=keepdim)
