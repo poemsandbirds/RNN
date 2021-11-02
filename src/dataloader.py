@@ -3,6 +3,7 @@
 from src.args import args
 import collections
 import random
+import re
 import numpy as np
 
 data_path = args.data_path
@@ -11,7 +12,7 @@ data_path = args.data_path
 def read_data():
     with open(data_path, 'r', encoding='UTF-8') as f:
         lines = f.readlines()
-    return [line.strip() for line in lines]
+    return [re.sub('[^A-Za-z]+', ' ', line).strip().lower() for line in lines]
 
 
 def tokenize(lines):

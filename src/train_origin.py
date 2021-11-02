@@ -10,9 +10,14 @@ from src.optimazer import SGD
 import math
 
 
+"""
+    存在很大问题，写成全连接层了
+"""
+
+
 def get_params(
         vocab_size: int,
-        num_hiddens: int,
+        num_hiddens: int
 ):
     """
     :param vocab_size: how many vocab in book
@@ -61,12 +66,13 @@ def load_params(
 
 def init_rnn_state(
         batch_size: int,
-        num_hiddens: int
+        num_hiddens: int,
+        num_steps: int
 ):
     """
     :return: state to init
     """
-    H = np.zeros((batch_size, num_hiddens), dtype=float)
+    H = np.zeros((batch_size * num_steps, num_hiddens), dtype=float)
     return (H,)
 
 
@@ -83,22 +89,17 @@ def rnn(
     W_xh, W_hh, b_h, W_hq, b_q = params
     H, = state
     H = Tensor.astensor(H)
-    outputs = []
-    for i in range(inputs.shape[0]):
-        X = inputs[i]
-        X = Tensor(X)
-        H = (X @ W_xh + H @ W_hh + b_h).tanh()
-        output = H @ W_hq + b_q
-        outputs.append(output)
-    outputs = Tensor.concatenate(outputs)
-    return outputs, (H,)
+    X = Tensor(inputs.reshape(inputs.shape[0] * inputs.shape[1], 27))
+    H = (X @ W_xh + H @ W_hh + b_h).tanh()
+    output = H @ W_hq + b_q
+    return output, (H,)
 
 
 class RNNModel:
 
-    def __init__(self, vocab_size, num_hiddens, get_params,
+    def __init__(self, vocab_size, num_hiddens, get_params, num_steps,
                  init_state, forward_fn):
-        self.vocab_size, self.num_hiddens = vocab_size, num_hiddens
+        self.vocab_size, self.num_hiddens, self.num_steps = vocab_size, num_hiddens, num_steps
         self.params = get_params(vocab_size, num_hiddens)
         self.init_state, self.forward_fn = init_state, forward_fn
 
@@ -107,7 +108,7 @@ class RNNModel:
         return self.forward_fn(X, state, self.params)
 
     def begin_state(self, batch_size):
-        return self.init_state(batch_size, self.num_hiddens)
+        return self.init_state(batch_size, self.num_hiddens, self.num_steps)
 
 
 def predict(
@@ -124,14 +125,11 @@ def predict(
     :return: predicted sentence
     """
     state = net.begin_state(batch_size=1)
-    outputs = [int(vocab[prefix[0]])]
-    get_input = lambda: np.array([outputs[-1]], dtype=float).reshape((1, 1))
-    for y in prefix[1:]:
-        _, state = net(get_input(), state)
-        outputs.append(int(vocab[y]))
+    outputs = [int(vocab[prefix[i]]) for i in range(5)]
+    get_input = lambda: np.array([outputs[-5], outputs[-4], outputs[-3], outputs[-2], outputs[-1]], dtype=float).reshape((1, 5))
     for _ in range(num_preds):
         y, state = net(get_input(), state)
-        outputs.append(int(np.argmax(y.data, axis=1).reshape(1)))
+        outputs.append(np.argmax(y.data, axis=1)[4])
     return ''.join([vocab.idx_to_token[i] for i in outputs])
 
 
@@ -161,10 +159,14 @@ def train_epoch(
     metric = Accumulator(1)
     i = 0
     for X, Y in train_iter:
+        Y = Y.astype(float)
         state = net.begin_state(batch_size=X.shape[0])
         Y = onehot(Y.T, len(vocab)).astype(float)
-        Y = Y.reshape((Y.shape[0]*Y.shape[1], Y.shape[2]))
-        Y = Tensor(Y)
+        tmp = []
+        for t in Y:
+            tmp.append(t)
+        Y = np.concatenate(tmp, axis=0)
+        Y = Tensor(Y, requires_grad=False)
         y_hat, state = net(X, state)
         l = y_hat.loss_cross_entropy_softmax(Y).mean()
         updater.zero_grad()
@@ -172,8 +174,8 @@ def train_epoch(
         grad_clipping(net, 1)
         updater.step()
         metric.add(l.data)
-        i += 1
         print(i)
+        i += 1
     return metric[0]
 
 
@@ -192,19 +194,19 @@ def train(
     for epoch in range(num_epochs):
         l = train_epoch(net, train_iter, updater)
         print('loss:{}'.format(l))
-        print(predict('harry', 30, net, vocab))
+        print(predict('harry', 50, net, vocab))
 
 
 if __name__ == '__main__':
-    batch_size, num_steps, num_hiddens = args.batch_size, args.num_steps, args.num_hiddens
+    batch_size, num_steps, num_hiddens = args.batch_size, 5, args.num_hiddens
     train_iter, vocab = data_loader(batch_size=batch_size, num_steps=num_steps)
 
-    net = RNNModel(len(vocab), num_hiddens, get_params, init_rnn_state, rnn)
+    net = RNNModel(len(vocab), num_hiddens, get_params, num_steps, init_rnn_state, rnn)
 
-    print(predict('harry', 30, net, vocab))
+    print(predict('harry', 50, net, vocab))
 
     lr = 1
-    num_epochs = 5
+    num_epochs = 10
 
     train(net, train_iter, vocab, lr, num_epochs)
 
