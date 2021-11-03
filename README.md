@@ -1,9 +1,15 @@
 # RNN
 仅调用numpy实现RNN的基本功能
 
-quick start:
+Quick Start:
+----------------------
+
 pip install -r requirements.txt
+
 python predict.py
+
+一些想法与思考
+------------------------
 
 自动求导机制的想法来自于torch.tensor，以tensor为目标进行autograd，包括梯度的存储，梯度节点的存储，反向传播等等
 
