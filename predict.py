@@ -2,7 +2,7 @@
 
 from src.args import args
 from src.dataloader import data_loader
-from src.train import RNNModel, load_params, init_rnn_state, rnn, predict
+from .train import RNNModel, load_params, init_rnn_state, rnn, predict
 
 
 if __name__ == '__main__':

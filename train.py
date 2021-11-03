@@ -9,6 +9,7 @@ from src.autograd import Tensor
 from src.optimazer import SGD
 import math
 
+
 def get_params(
         vocab_size: int,
         num_hiddens: int,
@@ -44,11 +45,11 @@ def load_params(
     """
     :return: local params
     """
-    W_xh = np.loadtxt('../output/params_0')
-    W_hh = np.loadtxt('../output/params_1')
-    b_h = np.loadtxt('../output/params_2')
-    W_hq = np.loadtxt('../output/params_3')
-    b_q = np.loadtxt('../output/params_4')
+    W_xh = np.loadtxt('output/params_0')
+    W_hh = np.loadtxt('output/params_1')
+    b_h = np.loadtxt('output/params_2')
+    W_hq = np.loadtxt('output/params_3')
+    b_q = np.loadtxt('output/params_4')
     W_xh = Tensor(W_xh, requires_grad=True)
     W_hh = Tensor(W_hh, requires_grad=True)
     b_h = Tensor(b_h, requires_grad=True)
@@ -158,7 +159,6 @@ def train_epoch(
     :return: train an epoch and return loss
     """
     metric = Accumulator(1)
-    i = 0
     for X, Y in train_iter:
         state = net.begin_state(batch_size=X.shape[0])
         Y = onehot(Y.T, len(vocab)).astype(float)
@@ -171,8 +171,6 @@ def train_epoch(
         grad_clipping(net, 1)
         updater.step()
         metric.add(l.data)
-        i += 1
-        print(i)
     return metric[0]
 
 
@@ -190,7 +188,7 @@ def train(
     updater = SGD(net.params, lr)
     for epoch in range(num_epochs):
         l = train_epoch(net, train_iter, updater)
-        print('loss:{}'.format(l))
+        print('loss:{}, epoch:{}'.format(l, epoch))
         print(predict('harry', 30, net, vocab))
 
 
@@ -198,7 +196,7 @@ if __name__ == '__main__':
     batch_size, num_steps, num_hiddens = args.batch_size, args.num_steps, args.num_hiddens
     train_iter, vocab = data_loader(batch_size=batch_size, num_steps=num_steps)
 
-    net = RNNModel(len(vocab), num_hiddens, get_params, init_rnn_state, rnn)
+    net = RNNModel(len(vocab), num_hiddens, load_params, init_rnn_state, rnn)
 
     print(predict('harry', 50, net, vocab))
 
@@ -207,8 +205,8 @@ if __name__ == '__main__':
 
     train(net, train_iter, vocab, lr, num_epochs)
 
-    np.savetxt('../output/params_0', net.params[0].data)
-    np.savetxt('../output/params_1', net.params[1].data)
-    np.savetxt('../output/params_2', net.params[2].data)
-    np.savetxt('../output/params_3', net.params[3].data)
-    np.savetxt('../output/params_4', net.params[4].data)
+    np.savetxt('output/params_0', net.params[0].data)
+    np.savetxt('output/params_1', net.params[1].data)
+    np.savetxt('output/params_2', net.params[2].data)
+    np.savetxt('output/params_3', net.params[3].data)
+    np.savetxt('output/params_4', net.params[4].data)
