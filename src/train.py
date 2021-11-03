@@ -9,7 +9,6 @@ from src.autograd import Tensor
 from src.optimazer import SGD
 import math
 
-
 def get_params(
         vocab_size: int,
         num_hiddens: int,
@@ -43,7 +42,7 @@ def load_params(
         num_hiddens
 ):
     """
-    :return: params from local
+    :return: local params
     """
     W_xh = np.loadtxt('../output/params_0')
     W_hh = np.loadtxt('../output/params_1')
@@ -201,7 +200,7 @@ if __name__ == '__main__':
 
     net = RNNModel(len(vocab), num_hiddens, get_params, init_rnn_state, rnn)
 
-    print(predict('harry', 30, net, vocab))
+    print(predict('harry', 50, net, vocab))
 
     lr = 1
     num_epochs = 5

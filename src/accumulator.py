@@ -1,7 +1,7 @@
 # -* coding:utf-8 *-
 
 class Accumulator:
-    """For accumulating sums over `n` variables."""
+
     def __init__(self, n):
         self.data = [0.0] * n
 

@@ -2,15 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae15c173-fd58-4cac-a8c3-c0e036bef408" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RNN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RNN.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/params_0" beforeDir="false" afterPath="$PROJECT_DIR$/output/params_0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/params_1" beforeDir="false" afterPath="$PROJECT_DIR$/output/params_1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/params_2" beforeDir="false" afterPath="$PROJECT_DIR$/output/params_2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/params_3" beforeDir="false" afterPath="$PROJECT_DIR$/output/params_3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/params_4" beforeDir="false" afterPath="$PROJECT_DIR$/output/params_4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/accumulator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/accumulator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/args.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/args.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/autograd.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/autograd.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/predict.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/optimazer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/optimazer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/timer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/timer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/train_new.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/train_origin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,29 +52,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.train">
-    <configuration name="RNNtest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="projects" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="E:/wechat_files/WeChat Files/wxid_cj6ajq27kxy021/FileStorage/File/2021-10/RNN" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="E:/wechat_files/WeChat Files/wxid_cj6ajq27kxy021/FileStorage/File/2021-10/RNN/RNNtest.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.predict">
     <configuration name="args" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RNN" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -102,6 +89,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/autograd.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="predict" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RNN" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/predict.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -156,11 +165,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.predict" />
         <item itemvalue="Python.train" />
         <item itemvalue="Python.autograd" />
         <item itemvalue="Python.rnn_scratch_mxnet" />
         <item itemvalue="Python.args" />
-        <item itemvalue="Python.RNNtest" />
       </list>
     </recent_temporary>
   </component>
@@ -189,6 +198,8 @@
       <workItem from="1635835385173" duration="9106000" />
       <workItem from="1635846344655" duration="576000" />
       <workItem from="1635851812944" duration="3679000" />
+      <workItem from="1635909373952" duration="149000" />
+      <workItem from="1635952595830" duration="2917000" />
     </task>
     <servers />
   </component>
@@ -196,26 +207,26 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1635669669854">
+    <state x="834" y="85" key="FileChooserDialogImpl" timestamp="1635909496831">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1635669669854" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1635855655061">
+    <state x="834" y="85" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1635909496831" />
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1635955541792">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1635855655061" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1635855655061">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1635955541792" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1635955541791">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1635855655061" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1635855655061">
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1635955541791" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1635955541791">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1635855655061" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1635855655061">
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1635955541791" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1635955541792">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1635855655061" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1635955541792" />
     <state width="1493" height="261" key="GridCell.Tab.1.bottom" timestamp="1635439449370">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -247,10 +258,11 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RNN$autograd.coverage" NAME="autograd Coverage Results" MODIFIED="1635841960535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/RNN$predict.coverage" NAME="predict Coverage Results" MODIFIED="1635955541785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/RNN$train_origin.coverage" NAME="train_origin Coverage Results" MODIFIED="1635320000380" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/RNN$RNNtest.coverage" NAME="RNNtest Coverage Results" MODIFIED="1635337257075" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="E:/wechat_files/WeChat Files/wxid_cj6ajq27kxy021/FileStorage/File/2021-10/RNN" />
     <SUITE FILE_PATH="coverage/RNN$args.coverage" NAME="args Coverage Results" MODIFIED="1635337774411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/RNN$rnn_scratch_mxnet.coverage" NAME="rnn_scratch_mxnet Coverage Results" MODIFIED="1635435150148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects/deeplearning/recurrent_neural_networks" />
-    <SUITE FILE_PATH="coverage/RNN$train.coverage" NAME="train Coverage Results" MODIFIED="1635853577729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/RNN$train.coverage" NAME="train Coverage Results" MODIFIED="1635955525706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>

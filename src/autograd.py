@@ -2,8 +2,11 @@
 
 import numpy as np
 from collections import namedtuple
+from src.args import args
 
 GRAD_NODE_FMT = namedtuple('grad_node', ['tensor', 'grad_fn'])
+vocab_size = args.vocab_size
+num_hiddens = args.num_hiddens
 
 
 class Tensor:
@@ -39,6 +42,7 @@ class Tensor:
                 return next_grad
 
             t.grad_node.append(GRAD_NODE_FMT(self, SelectBackward))
+
         return data
 
     def __len__(self):
@@ -53,19 +57,14 @@ class Tensor:
         t = Tensor(self.data.reshape(shape), self.requires_grad)
 
         if self.requires_grad:
+
             def ViewBackward(grad):
                 grad = grad.reshape(old_shape)
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(self, ViewBackward))
+
         return t
-
-    def zerograd(self):
-        if self.grad != None and self.grad.all() != 0:
-            self.grad = 0
-            if len(self.grad_node) != 0:
-                for i in range(len(self.grad_node)):
-                    self.grad_node[i].tensor.zerograd()
-
 
     def backward(self):
         if not self.requires_grad:
@@ -75,17 +74,13 @@ class Tensor:
                 self.grad = np.ones(1)
             else:
                 raise RuntimeError('grad can be implicitly created only for scalar outputs')
-        # if self.grad_node != [] and self.grad_node[0].tensor.grad_node != []:
-        #     if self.grad_node[0].tensor.grad_node[0].tensor.shape == (27, 512):
-        #         if len(self.grad_node[1].tensor.grad_node) == 2:
-        #             self.grad_node[1].tensor.grad_node.pop(0)
-        # print(self.shape)
-        # print(len(self.grad_node))
         for node in self.grad_node:
             if node.tensor.grad is None:
                 node.tensor.grad = node.grad_fn(self.grad)
             else:
-                if node.tensor.shape != (512, 512) and node.tensor.shape != (27, 512) and node.tensor.shape != (512, 27) and node.tensor.shape != (27,) and node.tensor.shape != (512,):
+                if node.tensor.shape != (num_hiddens, num_hiddens) and node.tensor.shape != (vocab_size, num_hiddens) \
+                        and node.tensor.shape != (num_hiddens, vocab_size) and node.tensor.shape != (vocab_size,) \
+                        and node.tensor.shape != (num_hiddens,):
                     node.tensor.grad = node.grad_fn(self.grad)
                 else:
                     node.tensor.grad += node.grad_fn(self.grad)
@@ -109,14 +104,15 @@ class Tensor:
 
                 assert grad.shape == self.data.shape, 'AddBackward, grad.shape != data.shape'
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(self, AddBackward))
 
         if other.requires_grad:
+
             def AddBackward(grad):
                 grad = grad * np.ones_like(other.data)
                 for _ in range(grad.ndim - other.data.ndim):
                     grad = grad.sum(axis=0)
-
                 for i, d in enumerate(other.data.shape):
                     if d == 1:
                         grad = grad.sum(axis=i, keepdims=True)
@@ -154,6 +150,7 @@ class Tensor:
                 return -grad
 
             t.grad_node.append(GRAD_NODE_FMT(self, NegBackward))
+
         return t
 
     def __mul__(self, other):
@@ -173,6 +170,7 @@ class Tensor:
                         grad = grad.sum(axis=i, keepdims=True)
                 assert grad.shape == self.data.shape, 'MulBackward, grad.shape != data.shape'
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(self, MulBackward))
 
         if other.requires_grad:
@@ -186,7 +184,9 @@ class Tensor:
                         grad = grad.sum(axis=i, keepdims=True)
                 assert grad.shape == other.data.shape, 'MulBackward, grad.shape != data.shape'
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(other, MulBackward))
+
         return t
 
     def __rmul__(self, other):
@@ -212,6 +212,7 @@ class Tensor:
                         grad = grad.sum(axis=i, keepdims=True)
                 assert grad.shape == self.data.shape, 'DivBackward, grad.shape != data.shape'
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(self, DivBackward))
 
         if other.requires_grad:
@@ -225,7 +226,9 @@ class Tensor:
                         grad = grad.sum(axis=i, keepdims=True)
                 assert grad.shape == other.data.shape, 'DivBackward, grad.shape != data.shape'
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(other, DivBackward))
+
         return t
 
     def __matmul__(self, other):
@@ -241,18 +244,23 @@ class Tensor:
         t = Tensor(data, requires_grad)
 
         if self.requires_grad:
+
             def DotBackward(grad):
                 grad = grad @ other.data.T
                 assert grad.shape == self.data.shape, 'DotBackward, grad.shape != data.shape'
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(self, DotBackward))
 
         if other.requires_grad:
+
             def DotBackward(grad):
                 grad = self.data.T @ grad
                 assert grad.shape == other.data.shape, 'DotBackward, grad.shape != data.shape'
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(other, DotBackward))
+
         return t
 
     def ln(inputs):
@@ -261,6 +269,7 @@ class Tensor:
         t = Tensor(data, requires_grad)
 
         if inputs.requires_grad:
+
             def LogBackward(grad):
                 return grad * (1/inputs.data)
 
@@ -274,6 +283,7 @@ class Tensor:
         t = Tensor(data, requires_grad)
 
         if inputs.requires_grad:
+
             def TanhBackward(grad):
                 return grad * (1 - np.tanh(inputs.data) ** 2)
 
@@ -287,6 +297,7 @@ class Tensor:
         t = Tensor(data, requires_grad)
 
         if inputs.requires_grad:
+
             def SquareBackward(grad):
                 return grad * (inputs.data*2)
 
@@ -295,11 +306,13 @@ class Tensor:
         return t
 
     def concatenate(inputs):
+
         def extract_data(X):
             Y = []
             for x in X:
                 Y.append(x.data)
             return Y
+
         data = np.concatenate(extract_data(inputs), axis=0)
         t = Tensor(data, requires_grad=True)
 
@@ -313,48 +326,6 @@ class Tensor:
 
         for i in range(len(inputs)):
             t.grad_node.append(GRAD_NODE_FMT(inputs[i], CatBackward_total[i]))
-        # def CatBackward1(grad):
-        #     tmp = grad[0:32]
-        #     return tmp
-        # def CatBackward2(grad):
-        #     tmp = grad[32:64]
-        #     return tmp
-
-        # t.grad_node.append(GRAD_NODE_FMT(inputs[0], CatBackward1))
-        # t.grad_node.append(GRAD_NODE_FMT(inputs[1], CatBackward2))
-        return t
-
-    def softmax(inputs):
-
-        def softmax_func(x):
-                row_max = x.max(axis=1)
-                row_max = row_max.reshape(-1, 1)
-                x = x - row_max
-                x_exp = np.exp(x)
-                x_sum = np.sum(x_exp, axis=1, keepdims=True)
-                s = x_exp / x_sum
-                return s
-
-        data = softmax_func(inputs.data)
-        requires_grad = inputs.requires_grad
-        t = Tensor(data, requires_grad)
-        t.is_leaf = False
-
-        if inputs.requires_grad:
-            def SoftmaxBackward(grad):
-                result = softmax_func(inputs.data)
-                length = len(result)
-                mat = np.zeros((length, length))
-                for i in range(length):
-                    for j in range(length):
-                        if j == i:
-                            mat[i][j] = result.data[j] * (1 - inputs.data[j])
-                        else:
-                            mat[i][j] = -result.data[i] * inputs.data[j]
-                next_grad = mat @ grad
-                return next_grad
-
-            t.grad_node.append(GRAD_NODE_FMT(inputs, SoftmaxBackward))
 
         return t
 
@@ -388,16 +359,17 @@ class Tensor:
 
         return t
 
-
     def mean(self, dim=None, keepdim=False):
         data = self.data.mean(axis=dim, keepdims=keepdim)
         requires_grad = self.requires_grad
         t = Tensor(data, requires_grad)
 
         if self.requires_grad:
+
             def MeanBackward(grad):
                 grad = grad * np.ones_like(self.data) / (self.data.reshape(-1).shape[0] / data.reshape(-1).shape[0])
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(self, MeanBackward))
 
         return t
@@ -408,8 +380,10 @@ class Tensor:
         t = Tensor(data, requires_grad)
 
         if self.requires_grad:
+
             def SumBackward(grad):
                 return grad
+
             t.grad_node.append(GRAD_NODE_FMT(self, SumBackward))
 
         return t
