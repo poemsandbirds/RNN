@@ -291,6 +291,24 @@ class Tensor:
 
         return t
 
+    def sigmoid(inputs):
+
+        def sigmoid_numpy(x):
+            return 1 / (np.exp(-x) + 1)
+
+        data = sigmoid_numpy(inputs.data)
+        requires_grad = inputs.requires_grad
+        t = Tensor(data, requires_grad)
+
+        if inputs.requires_grad:
+
+            def SigBackward(grad):
+                return grad * (sigmoid_numpy(inputs.data) * (1- sigmoid_numpy(inputs.data)))
+
+            t.grad_node.append(GRAD_NODE_FMT(inputs, SigBackward))
+
+        return t
+
     def square(inputs):
         data = inputs.data ** 2
         requires_grad = inputs.requires_grad

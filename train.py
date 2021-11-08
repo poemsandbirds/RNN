@@ -153,7 +153,8 @@ def grad_clipping(
 def train_epoch(
         net,
         train_iter,
-        updater
+        updater,
+        vocab
 ):
     """
     :return: train an epoch and return loss
@@ -168,6 +169,7 @@ def train_epoch(
         l = y_hat.loss_cross_entropy_softmax(Y).mean()
         updater.zero_grad()
         l.backward()
+        print(net.params[0].grad)
         grad_clipping(net, 1)
         updater.step()
         metric.add(l.data)
@@ -187,7 +189,7 @@ def train(
     """
     updater = SGD(net.params, lr)
     for epoch in range(num_epochs):
-        l = train_epoch(net, train_iter, updater)
+        l = train_epoch(net, train_iter, updater, vocab)
         print('loss:{}, epoch:{}'.format(l, epoch))
         print(predict('harry', 30, net, vocab))
 
